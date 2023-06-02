@@ -1,7 +1,4 @@
 {
   "extends": "eslint-config-egg",
-  "root": false,
-  "rules": {
-    "parser": "vue-eslint-parser"
-  }
+  "root": false
 }
