@@ -25,15 +25,23 @@
       display: flex;
     }
     .label {
-      width: 70px;
+      width: 110px;
       font-size: 14px;
+      text-align: right;
     }
     .input {
       flex: 1;
       padding: 4px 6px;
     }
-    .ml80 {
-      margin-left: 70px;
+
+    .des {
+      flex: 1;
+      font-size: 12px;
+      color: #999;
+    }
+
+    .mt20 {
+      margin-top: 10px;
     }
   </style>
 </head>
@@ -46,23 +54,31 @@
   </ul> -->
   <form id="myForm" class="card">
     <div class="item">
-      <span class="label">店铺id：</span>
+      <span class="label">店铺(shopid)：</span>
       <input class="input" type="text" name="shopid" value="457706720" placeholder="请输入">
     </div>
     <div class="item">
-      <span class="label">商品id：</span>
+      <span class="label">商品id(itemid)：</span>
       <input class="input" type="text" name="itemid" value="11242593437" placeholder="请输入">
     </div>
     <div class="item">
       <span class="label">条数：</span>
-      <input class="input" type="number" name="total" value="500" placeholder="请输入">
+      <input class="input" type="number" name="total" value="600" placeholder="请输入">
     </div>
     <div class="item">
       <span class="label">文件名：</span>
       <input class="input" type="text" name="name" placeholder="请输入">
     </div>
     <div class="item">
-      <input class="input ml80" type="submit" id="submit" value="获取数据">
+      <span class="label">品牌名：</span>
+      <input class="input" type="text" name="brandName" placeholder="请输入">
+    </div>
+    <div class="item">
+      <span class="label"></span>
+      <div class="des">多个别名用|连接</div>
+    </div>
+    <div class="item">
+      <input class="input mt20" type="submit" id="submit" value="获取数据">
     </div>
   </form>
 

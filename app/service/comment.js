@@ -24,7 +24,7 @@ class CommentService extends Service {
     const { ctx } = this;
     let start = 0;
     const length = 10;
-    const { total } = params;
+    const { total, brandName = '' } = params;
     const times = Math.ceil(total / length);
     let list = [];
 
@@ -43,7 +43,9 @@ class CommentService extends Service {
       });
       const newList = (res.data.data?.ratings || []).map(item => {
         const newItem = {};
-        const content = item.comment.split('\n\n')[1]?.replace(/skintific/ig, 'MeToo');
+        // const content = item.comment.split('\n\n')[1]?.replace(/skintific/ig, 'MeToo');
+        const reg = new RegExp(brandName, 'ig');
+        const content = !!brandName ? item.comment?.replace(reg, 'MeToo') : item.comment;
         newItem.content = content || '此条评论没内容';
         return newItem;
       });
