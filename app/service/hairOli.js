@@ -52,14 +52,19 @@ class HairOliService extends Service {
         dataType: 'json',
       });
       const newList = (res.data?.Results || []).map(item => {
-        const newItem = {};
         // const content = item.comment.split('\n\n')[1]?.replace(/skintific/ig, 'MeToo');
         const reg = new RegExp(brandName, 'ig');
         const content = !!brandName ? item.ReviewText?.replace(reg, 'MeToo') : item.ReviewText;
-        newItem.content = content || '此条评论没内容';
         const photos = (item.Photos || []).map(v => v.Sizes.normal.Url).join(',');
-        newItem.photos = photos;
-        return newItem;
+        return {
+          productId: '',
+          content,
+          status: 'pending',
+          name: item.UserNickname,
+          photo_urls: photos,
+          created_at: item.LastModificationTime,
+          rating: 5,
+        };
       });
       start += length;
       list = [ ...list, ...newList ];

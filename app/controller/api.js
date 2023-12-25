@@ -33,8 +33,13 @@ class ExcelController extends Controller {
     const { ctx, service } = this;
     const headers = [
       [
-        { t: '内容', f: 'content', w: 130 },
-        { t: '图片', f: 'photos', w: 130 },
+        { t: 'productId', f: 'productId' },
+        { t: 'content', f: 'content', w: 130 },
+        { t: 'status', f: 'status' },
+        { t: 'name', f: 'name' },
+        { t: 'photo_urls', f: 'photo_urls', w: 130 },
+        { t: 'created_at', f: 'created_at' },
+        { t: 'rating', f: 'rating' },
       ],
     ];
     const data = await ctx.service.hairOli.getList(ctx.request.body || {});
