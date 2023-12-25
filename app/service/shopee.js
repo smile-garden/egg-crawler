@@ -19,7 +19,7 @@ const initParams = {
   variation_filters: '',
 };
 
-class CommentService extends Service {
+class ShopeeService extends Service {
   async getList(params) {
     const { ctx } = this;
     let start = 0;
@@ -56,4 +56,4 @@ class CommentService extends Service {
   }
 }
 
-module.exports = CommentService;
+module.exports = ShopeeService;

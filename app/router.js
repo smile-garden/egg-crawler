@@ -7,7 +7,10 @@ module.exports = app => {
   const { router, controller, middleware } = app;
   const intercept = middleware.intercept();
 
-  router.get('/', controller.home.index);
+  router.get('/', controller.main.index);
+  router.get('/shopee', controller.main.shopee);
   router.post('/list', intercept, controller.api.getList);
-  router.post('/excel', intercept, controller.api.index);
+  router.post('/shopee/excel', intercept, controller.api.shopee);
+  router.get('/hairoli', controller.main.hairOli);
+  router.post('/hairoli/excel', intercept, controller.api.hairOli);
 };

@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>获取评论数据</title>
+  <title>获取hairOli评论数据</title>
   <style>
     html, body {
       height: 100%;
@@ -15,10 +15,19 @@
       align-items: center;
     }
     .card {
-      padding: 40px 30px 30px;
-      border-radius: 20px;
+      padding: 20px 30px 30px;
+      min-width: 360px;
+      border-radius: 12px;
       background-color: #fff;
       box-shadow: 0 0 12px 3px rgba(0, 0, 0, 0.1);
+    }
+    .card-title {
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      font-size: 18px;
+      font-weight: 700;
+      text-align: center;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     }
     .item {
       margin-bottom: 10px;
@@ -47,23 +56,15 @@
 </head>
 
 <body>
-  <!-- <ul>
-    {% for item in list %}
-      <li>{{ item.id }}: {{ item.content }}</li>
-    {% endfor %}
-  </ul> -->
   <form id="myForm" class="card">
+    <div class="card-title">Hair Oli</div>
     <div class="item">
-      <span class="label">店铺(shopid)：</span>
-      <input class="input" type="text" name="shopid" value="457706720" placeholder="请输入">
-    </div>
-    <div class="item">
-      <span class="label">商品id(itemid)：</span>
-      <input class="input" type="text" name="itemid" value="11242593437" placeholder="请输入">
+      <span class="label">productid：</span>
+      <input class="input" type="text" name="productid" value="132986142736" placeholder="请输入">
     </div>
     <div class="item">
       <span class="label">条数：</span>
-      <input class="input" type="number" name="total" value="600" placeholder="请输入">
+      <input class="input" type="number" name="total" value="1000" placeholder="请输入">
     </div>
     <div class="item">
       <span class="label">文件名：</span>
@@ -92,16 +93,16 @@
         alert('数据生成中, 请等待...');
         return;
       }
-      if (!data.shopid || !data.itemid || !data.total) {
+      if (!data.productid || !data.total) {
         alert('请输入');
         return;
       }
-      if (+data.total < 1 || +data.total > 2000) {
-        alert('至少1条，至多2000条');
+      if (+data.total < 1 || +data.total > 3000) {
+        alert('至少1条，至多3000条');
         return;
       }
       loading = true;
-      fetch('/excel', {
+      fetch('/hairoli/excel', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -121,7 +122,7 @@
             alert('未查询到数据');
             return;
           }
-          downloadExcel(res.data, `${data.name} ${data.itemid} 评论数据`);
+          downloadExcel(res.data, `Hair oli:${data.name} ${data.productid} 评论数据`);
         });
     };
 

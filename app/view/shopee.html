@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>获取shopee评论数据</title>
+  <style>
+    html, body {
+      height: 100%;
+      background-color: #efefef;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .card {
+      padding: 20px 30px 30px;
+      border-radius: 12px;
+      background-color: #fff;
+      box-shadow: 0 0 12px 3px rgba(0, 0, 0, 0.1);
+    }
+    .card-title {
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      font-size: 18px;
+      font-weight: 700;
+      text-align: center;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    .item {
+      margin-bottom: 10px;
+      display: flex;
+    }
+    .label {
+      width: 110px;
+      font-size: 14px;
+      text-align: right;
+    }
+    .input {
+      flex: 1;
+      padding: 4px 6px;
+    }
+
+    .des {
+      flex: 1;
+      font-size: 12px;
+      color: #999;
+    }
+
+    .mt20 {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- <ul>
+    {% for item in list %}
+      <li>{{ item.id }}: {{ item.content }}</li>
+    {% endfor %}
+  </ul> -->
+  <form id="myForm" class="card">
+    <div class="card-title">Shopee</div>
+    <div class="item">
+      <span class="label">店铺(shopid)：</span>
+      <input class="input" type="text" name="shopid" value="457706720" placeholder="请输入">
+    </div>
+    <div class="item">
+      <span class="label">商品id(itemid)：</span>
+      <input class="input" type="text" name="itemid" value="11242593437" placeholder="请输入">
+    </div>
+    <div class="item">
+      <span class="label">条数：</span>
+      <input class="input" type="number" name="total" value="600" placeholder="请输入">
+    </div>
+    <div class="item">
+      <span class="label">文件名：</span>
+      <input class="input" type="text" name="name" placeholder="请输入">
+    </div>
+    <div class="item">
+      <span class="label">品牌名：</span>
+      <input class="input" type="text" name="brandName" placeholder="请输入">
+    </div>
+    <div class="item">
+      <span class="label"></span>
+      <div class="des">多个别名用|连接</div>
+    </div>
+    <div class="item">
+      <input class="input mt20" type="submit" id="submit" value="获取数据">
+    </div>
+  </form>
+
+  <script>
+    let loading = false;
+    const submit = document.querySelector('#submit');
+    submit.onclick = function (e) {
+      e.preventDefault();
+      const data = getFormData();
+      if (loading) {
+        alert('数据生成中, 请等待...');
+        return;
+      }
+      if (!data.shopid || !data.itemid || !data.total) {
+        alert('请输入');
+        return;
+      }
+      if (+data.total < 1 || +data.total > 2000) {
+        alert('至少1条，至多2000条');
+        return;
+      }
+      loading = true;
+      fetch('/shopee/excel', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data),
+      })
+        .then((res) => {
+          if (res.status === 200) {
+            return res.json();
+          } else {
+            loading = false;
+          }
+        })
+        .then((res) => {
+          if (!res.data) {
+            loading = false;
+            alert('未查询到数据');
+            return;
+          }
+          downloadExcel(res.data, `${data.name} ${data.itemid} 评论数据`);
+        });
+    };
+
+    // 获取表单数据
+    const getFormData = () => {
+      const form = document.querySelector('#myForm');
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+      return data;
+    };
+
+    const downloadExcel = (buffer, filename = '评论数据') => {
+      const aLink = document.createElement('a');
+      const res = new Uint8Array(buffer.data);
+      //Blob中的type有很多，这里是下载excel中的xlsx
+      const blob = new Blob([res, res], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      aLink.href = URL.createObjectURL(blob);
+      console.log(blob, aLink.href)
+      aLink.setAttribute('download', `${filename}.xlsx`); // 下载文件名称
+      document.body.appendChild(aLink);
+      aLink.click();
+      URL.revokeObjectURL(aLink.href); // 释放URL对象
+      document.body.removeChild(aLink);
+      loading = false;
+    }
+  </script>
+</body>
+
+</html>
